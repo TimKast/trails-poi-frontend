@@ -17,13 +17,33 @@ export const authService = {
       if (response.ok) {
         const session: Session = {
           name: data.email,
-          token: data.token,
+          token: data.token
         };
         return session;
       }
       return null;
     } catch (error) {
       console.error("Login failed:", error);
+      return null;
+    }
+  },
+
+  async signup(email: string, password: string): Promise<Session | null> {
+    try {
+      const response = await fetch(`${this.baseUrl}signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (response.ok) {
+        return await this.login(email, password);
+      }
+      return null;
+    } catch (error) {
+      console.error("Signup failed:", error);
       return null;
     }
   }

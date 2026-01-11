@@ -4,17 +4,10 @@
   export let form: ActionData;
 </script>
 
-<form method="POST" action="?/login">
+<form method="POST" action="?/signup">
   <label for="email">Email</label>
   <div>
-    <input
-      id="email"
-      type="email"
-      name="email"
-      placeholder="Email address"
-      value={form?.email ?? ""}
-      required
-    />
+    <input id="email" type="email" name="email" placeholder="Email address" required />
   </div>
 
   <label for="password">Password</label>
@@ -23,8 +16,8 @@
   </div>
 
   <div class="actions">
-    <button type="submit">Log in</button>
-    <a href="/signup">No account? Sign up here.</a>
+    <button type="submit">Sign up</button>
+    <a href="/login">Already have an account? Log in here.</a>
   </div>
 
   {#if form?.error}
@@ -39,7 +32,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    width: 300px;
+    width: 400px;
     padding: 2rem;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -84,8 +77,6 @@
   }
 
   a {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
     color: var(--color-dark-spruce);
     text-decoration: none;
   }

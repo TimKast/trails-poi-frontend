@@ -1,15 +1,15 @@
+import type { Actions } from "@sveltejs/kit";
 import { dev } from "$app/environment";
 import { authService } from "$lib/services/auth-service";
 import { redirect } from "@sveltejs/kit";
-import type { Actions } from "./$types";
 
 export const actions: Actions = {
-  login: async ({ request, cookies }) => {
+  signup: async ({ request, cookies }) => {
     const form = await request.formData();
     const email = form.get("email") as string;
     const password = form.get("password") as string;
 
-    const session = await authService.login(email, password);
+    const session = await authService.signup(email, password);
 
     if (session) {
       const userJson = JSON.stringify(session);
@@ -24,8 +24,8 @@ export const actions: Actions = {
     } else {
       return {
         success: false,
-        email,
-        error: "Invalid email or password."
+        error:
+          "Something went wrong with the automatic login after signup. Please try to log in manually."
       };
     }
   }
