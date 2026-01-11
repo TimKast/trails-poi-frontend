@@ -1,0 +1,30 @@
+:root {
+  /* Color Palette */
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  --color-dark-spruce: #2c5530;
+  --color-muted-teal: #739e82;
+  --color-lime-cream: #f3ffb6;
+  --color-toasted-almond: #d38b5d;
+  --color-golden-earth: #99621e;
+
+  --color-bg: var(--color-white);
+
+  /* Fonts */
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--color-white);
+  font-family: var(--font-sans);
+  font-weight: 500;
+
+  button,
+  textarea,
+  input,
+  select {
+    font-family: inherit;
+    font-weight: inherit;
+  }
+}
