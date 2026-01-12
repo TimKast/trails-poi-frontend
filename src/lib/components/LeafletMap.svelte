@@ -15,6 +15,9 @@
   let overlays: Control.LayersObject = {};
   let baseLayers: any;
   let poiLayer: LayerGroup;
+  let peakLayer: LayerGroup;
+  let hutLayer: LayerGroup;
+  let lakeLayer: LayerGroup;
   let trailLayer: LayerGroup;
   let L: any;
 
@@ -58,12 +61,35 @@
   export async function addPoiMarker(poi: Poi) {
     const leaflet = await import("leaflet");
     const L = leaflet.default;
-    if (!poiLayer) {
-      poiLayer = L.layerGroup().addTo(map);
-      control.addOverlay(poiLayer, "Points of Interest");
+
+    let layer;
+    switch (poi.category) {
+      case "peak":
+        if (!peakLayer) {
+          peakLayer = L.layerGroup().addTo(map);
+          control.addOverlay(peakLayer, "Peaks");
+        }
+        layer = peakLayer;
+        break;
+      case "hut":
+        if (!hutLayer) {
+          hutLayer = L.layerGroup().addTo(map);
+          control.addOverlay(hutLayer, "Huts");
+        }
+        layer = hutLayer;
+        break;
+      case "lake":
+        if (!lakeLayer) {
+          lakeLayer = L.layerGroup().addTo(map);
+          control.addOverlay(lakeLayer, "Lakes");
+        }
+        layer = lakeLayer;
+        break;
+      default:
+        return;
     }
     const marker = L.marker([poi.location.coordinates[1], poi.location.coordinates[0]]).addTo(
-      poiLayer
+      layer!
     );
     const popupText = `<b>${poi.name}</b>`;
     marker.bindTooltip(popupText);
