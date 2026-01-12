@@ -19,9 +19,7 @@
   <h1>Welcome to Alpine-Trails</h1>
   <p>Explore the best trails and points of interest in the Alps!</p>
   <div class="content">
-    <div class="map-container">
-      <LeafletMap bind:this={map} />
-    </div>
+    <LeafletMap height={85} bind:this={map} />
     <div class="list-container">
       <h2>Available Trails</h2>
       {#each data.trails as trail}
@@ -54,10 +52,6 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-  }
-  .map-container {
-    height: 100vh;
-    width: 70%;
   }
 
   .list-container {

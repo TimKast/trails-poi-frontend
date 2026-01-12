@@ -5,7 +5,7 @@
   import type { Poi, Trail } from "$lib/types/object-types";
 
   let id = "home-map-id";
-  let location = { lat: 48, lng: 11 };
+  let { height = 100, width = 100, location = { lat: 48, lon: 11 } } = $props();
   let zoom = 8;
   let minZoom = 6;
   let activeLayer = "Terrain";
@@ -14,7 +14,6 @@
   let control: Control.Layers;
   let overlays: Control.LayersObject = {};
   let baseLayers: any;
-  let poiLayer: LayerGroup;
   let peakLayer: LayerGroup;
   let hutLayer: LayerGroup;
   let lakeLayer: LayerGroup;
@@ -39,7 +38,7 @@
     let defaultLayer = baseLayers[activeLayer];
 
     map = L.map(id, {
-      center: [location.lat, location.lng],
+      center: [location.lat, location.lon],
       zoom: zoom,
       minZoom: minZoom,
       layers: [defaultLayer]
@@ -101,4 +100,4 @@
   }
 </script>
 
-<div {id} style="height: 100vh"></div>
+<div {id} style="height: {height}vh; width: {width}vw;"></div>

@@ -1,40 +1,62 @@
 <script lang="ts">
+  import LeafletMap from "$lib/components/LeafletMap.svelte";
+  import { onMount } from "svelte";
+
   export let data: any;
-  console.log("POI page data: ", data);
+  let map: LeafletMap;
+
+  console.log("POI data:", data);
+  onMount(async () => {
+    await map.addPoiMarker(data.poi);
+  });
 </script>
 
 <section class="page">
-  <div class="image-container">
-    {#each data.poi?.images as image}
-      <img src={image} alt="Point of Interest" />
-    {/each}
+  <div class="column">
+    <div class="overview">
+      <h1>{data.poi?.name}</h1>
+      <p>{data.poi?.description}</p>
+      <p>Lat: {data.poi?.location.coordinates[1]}</p>
+      <p>Lng: {data.poi?.location.coordinates[0]}</p>
+    </div>
+    <LeafletMap
+      height={50}
+      width={50}
+      location={{ lat: data.poi?.location.coordinates[1], lon: data.poi?.location.coordinates[0] }}
+      bind:this={map}
+    />
   </div>
-  <div class="overview">
-    <h1>{data.poi?.name}</h1>
-    <p>{data.poi?.description}</p>
+  <div class="column">
+    <div class="image-container">
+      {#each data.poi?.images as image}
+        <img src={image} alt="Point of Interest" />
+      {/each}
+    </div>
   </div>
 </section>
 
 <style>
   .page {
     display: flex;
+    flex-direction: row;
+  }
+
+  .column {
+    display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 1rem;
+    width: 50vw;
+  }
+
+  .overview {
+    height: 50vh;
   }
 
   .image-container {
     display: flex;
-    overflow-x: auto;
-    margin-bottom: 1rem;
 
     img {
-      height: 300px;
+      height: auto;
+      width: 50vw;
     }
-  }
-
-  .overview {
-    max-width: 800px;
-    text-align: center;
   }
 </style>
