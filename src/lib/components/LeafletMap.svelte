@@ -1,27 +1,30 @@
 <script lang="ts">
   import "leaflet/dist/leaflet.css";
   import { onMount } from "svelte";
-  import type { Control, Map as LeafletMap } from "leaflet";
+  import type { Control, Layer, LayerGroup, Map as LeafletMap } from "leaflet";
+  import type { Poi, Trail } from "$lib/types/object-types";
 
-  let { height = 80 } = $props();
   let id = "home-map-id";
   let location = { lat: 48, lng: 11 };
   let zoom = 8;
   let minZoom = 6;
   let activeLayer = "Terrain";
 
-  let imap: LeafletMap;
+  let map: LeafletMap;
   let control: Control.Layers;
   let overlays: Control.LayersObject = {};
   let baseLayers: any;
+  let poiLayer: LayerGroup;
+  let trailLayer: LayerGroup;
   let L: any;
 
   onMount(async () => {
     const leaflet = await import("leaflet");
     L = leaflet.default;
+
     baseLayers = {
       Terrain: leaflet.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 17,
+        maxZoom: 22,
         attribution:
           'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
       }),
@@ -31,23 +34,45 @@
       })
     };
     let defaultLayer = baseLayers[activeLayer];
-    imap = leaflet.map(id, {
+
+    map = L.map(id, {
       center: [location.lat, location.lng],
       zoom: zoom,
       minZoom: minZoom,
       layers: [defaultLayer]
     });
-    control = leaflet.control.layers(baseLayers, overlays).addTo(imap);
+    control = leaflet.control.layers(baseLayers, overlays).addTo(map);
   });
 
-  export async function addMarker(lat: number, lon: number, popupText?: string) {
+  export async function addTrailMarker(trail: Trail) {
     const leaflet = await import("leaflet");
     const L = leaflet.default;
-    const marker = L.marker([lat, lon]).addTo(imap);
-    if (popupText) {
-      marker.bindTooltip(popupText);
+    if (!trailLayer) {
+      trailLayer = L.layerGroup().addTo(map);
+      control.addOverlay(trailLayer, "Trails");
+    }
+    const marker = L.marker([trail.location.lat, trail.location.lon]).addTo(trailLayer);
+    marker.bindTooltip(`<b>${trail.name}</b>`);
+  }
+
+  export async function addPoiMarker(poi: Poi) {
+    const leaflet = await import("leaflet");
+    const L = leaflet.default;
+    if (!poiLayer) {
+      poiLayer = L.layerGroup().addTo(map);
+      control.addOverlay(poiLayer, "Points of Interest");
+    }
+    const marker = L.marker([poi.location.coordinates[1], poi.location.coordinates[0]]).addTo(
+      poiLayer
+    );
+    const popupText = `<b>${poi.name}</b>`;
+    marker.bindTooltip(popupText);
+
+    const iconElement = marker.getElement();
+    if (iconElement) {
+      iconElement.style.filter = "hue-rotate(120deg)";
     }
   }
 </script>
 
-<div {id} style="height: {height}vh"></div>
+<div {id} style="height: 100vh"></div>

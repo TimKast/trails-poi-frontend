@@ -19,5 +19,23 @@ export const trailService = {
       console.error("Fetching trails failed:", error);
       return [];
     }
+  },
+
+  async getTrailById(id: string, token: string): Promise<Trail | null> {
+    try {
+      const response = await fetch(`${this.baseUrl}trails/${id}`, {
+        method: "GET",
+        headers: { Authorization: token }
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        return data as Trail;
+      }
+      return null;
+    } catch (error) {
+      console.error("Fetching trail by ID failed:", error);
+      return null;
+    }
   }
 };
