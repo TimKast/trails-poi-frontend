@@ -3,6 +3,7 @@ export interface Trail {
   name: string;
   description: string;
   location: { lat: number; lon: number };
+  images: string[];
   __v: number;
 }
 
