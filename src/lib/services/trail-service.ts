@@ -73,5 +73,23 @@ export const trailService = {
       console.error("Deleting trail failed:", error);
       return false;
     }
+  },
+
+  addImages: async (id: string, imageUrls: string[], token: string): Promise<boolean> => {
+    try {
+      const response = await fetch(`${trailService.baseUrl}trails/${id}/images`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        },
+        body: JSON.stringify(imageUrls)
+      });
+
+      return response.ok;
+    } catch (error) {
+      console.error("Adding images failed:", error);
+      return false;
+    }
   }
 };

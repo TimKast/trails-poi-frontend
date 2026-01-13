@@ -3,13 +3,21 @@
   import LeafletMap from "$lib/components/LeafletMap.svelte";
   import { trailService } from "$lib/services/trail-service";
   import { onMount } from "svelte";
+  import { CldUploadWidget } from "svelte-cloudinary";
 
-  export let data: any;
+  let { data } = $props();
   let map: LeafletMap;
-  console.log("Trail data:", data);
   onMount(async () => {
-    await map.addTrailMarker(data.trail);
+    await map.addTrailMarker(data.trail!);
   });
+
+  function onSuccess(result: any) {
+    if (result.event === "success") {
+      trailService.addImages(data.trail!._id, [result.info.secure_url], data.session!.token);
+    } else if (result.event === "error") {
+      alert("Error uploading image: " + result.error.message);
+    }
+  }
 </script>
 
 <section class="page">
@@ -27,14 +35,14 @@
         <p>Lng: {data.trail?.location.lon}</p>
       </div>
       <div class="actions">
-        <button type="button" onclick={() => alert("Map integration coming soon!")}>
-          Add images (Coming Soon)
-        </button>
+        <CldUploadWidget uploadPreset="unsigned_upload" let:open let:isLoading {onSuccess}>
+          <button onclick={() => open()} disabled={isLoading}> Add Image </button>
+        </CldUploadWidget>
         <button
           type="button"
           onclick={() =>
             trailService
-              .deleteTrail(data.trail?._id, data.session.token)
+              .deleteTrail(data.trail!._id, data.session!.token)
               .then(() => {
                 alert("Trail deleted successfully.");
                 goto("/home");
