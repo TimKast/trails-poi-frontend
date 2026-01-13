@@ -1,5 +1,6 @@
 <script lang="ts">
   import favicon from "$lib/assets/favicon.svg";
+  import Navbar from "$lib/components/Navbar.svelte";
   import "../app.css";
   import { loggedInUser } from "$lib/runes.svelte";
   export let data: any;
@@ -16,11 +17,5 @@
   <link rel="icon" href={favicon} />
 </svelte:head>
 
-<div>
-  {#if loggedInUser.token}
-    <a data-sveltekit-preload-data="tap" class="navbar-item" href="/logout">
-      Logout [{loggedInUser.email}]</a
-    >
-  {/if}
-  <slot />
-</div>
+<Navbar />
+<slot />

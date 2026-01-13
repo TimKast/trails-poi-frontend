@@ -6,7 +6,7 @@
 
   let id = "home-map-id";
   let { height = 100, width = 100, location = { lat: 48, lon: 11 } } = $props();
-  let zoom = 8;
+  let zoom = 9;
   let minZoom = 6;
   let activeLayer = "Terrain";
 
@@ -26,12 +26,12 @@
 
     baseLayers = {
       Terrain: leaflet.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 22,
+        maxZoom: 21,
         attribution:
           'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
       }),
       Topology: leaflet.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
-        maxZoom: 17,
+        maxZoom: 21,
         attribution: "© OpenStreetMap contributors, © OpenTopoMap"
       })
     };

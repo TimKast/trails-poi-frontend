@@ -20,7 +20,7 @@
       <p>Lng: {data.poi?.location.coordinates[0]}</p>
     </div>
     <LeafletMap
-      height={50}
+      height={48}
       width={50}
       location={{ lat: data.poi?.location.coordinates[1], lon: data.poi?.location.coordinates[0] }}
       bind:this={map}
@@ -48,7 +48,7 @@
   }
 
   .overview {
-    height: 50vh;
+    height: 40vh;
   }
 
   .image-container {

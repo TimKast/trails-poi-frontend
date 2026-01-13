@@ -9,6 +9,7 @@
   --color-toasted-almond: #d38b5d;
   --color-golden-earth: #99621e;
 
+  --color-font-primary: #424444;
   --color-bg: var(--color-white);
 
   /* Fonts */
@@ -19,6 +20,7 @@ body {
   background-color: var(--color-white);
   font-family: var(--font-sans);
   font-weight: 500;
+  color: var(--color-font-primary);
 
   button,
   textarea,
