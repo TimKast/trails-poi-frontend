@@ -16,8 +16,8 @@
 </script>
 
 <section class="page">
-  <h1>Welcome to Alpine-Trails</h1>
-  <p>Explore the best trails and points of interest in the Alps!</p>
+  <h1>Explorer</h1>
+  <p>Find the best trails and points of interest in Bavaria!</p>
   <div class="content">
     <LeafletMap height={85} bind:this={map} />
     <div class="list-container">
