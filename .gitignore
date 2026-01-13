@@ -2,6 +2,7 @@ node_modules
 
 #VsCode
 .vscode/
+.github/
 
 # Output
 .output

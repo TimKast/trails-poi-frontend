@@ -5,3 +5,13 @@ export interface Trail {
   location: { lat: number; lon: number };
   __v: number;
 }
+
+export interface Poi {
+  _id: string;
+  name: string;
+  description: string;
+  location: { type: "Point"; coordinates: [number, number] };
+  category: "hut" | "lake" | "peak";
+  images: string[];
+  __v: number;
+}
