@@ -3,6 +3,7 @@
   import ScrollableContainer from "$lib/components/ScrollableContainer.svelte";
   import { onMount } from "svelte";
   import type { PageProps } from "./$types";
+  import { goto } from "$app/navigation";
 
   let { data }: PageProps = $props();
   let map: LeafletMap;
@@ -28,6 +29,7 @@
         <LeafletMap height={72} bind:this={map} />
       </div>
       <div class="lists">
+        <button type="button" onclick={() => goto("/trails/create")}> Add trail </button>
         <ScrollableContainer title="Available Trails" maxHeight={28}>
           {#each data.trails as trail}
             <div class="list-item">
