@@ -1,9 +1,27 @@
 <script lang="ts">
-  import { invalidate, invalidateAll } from "$app/navigation";
+  import { invalidateAll } from "$app/navigation";
   import ScrollableContainer from "$lib/components/ScrollableContainer.svelte";
   import { userService } from "$lib/services/user-service.js";
+  import { onMount } from "svelte";
+  import Chart from "svelte-frappe-charts";
 
+  let mounted = $state(false);
   let { data } = $props();
+
+  const chartData = {
+    labels: ["User", "Admin"],
+    datasets: [
+      {
+        values: [
+          data.users.filter((user) => user.role === "user").length,
+          data.users.filter((user) => user.role === "admin").length
+        ]
+      }
+    ]
+  };
+  onMount(() => {
+    mounted = true;
+  });
 </script>
 
 <section class="page">
@@ -54,6 +72,13 @@
       {/each}
     </ScrollableContainer>
   </div>
+  {#if mounted}
+    <div class="charts">
+      <div class="chart-container">
+        <Chart data={chartData} type="pie" />
+      </div>
+    </div>
+  {/if}
 </section>
 
 <style>
@@ -98,5 +123,23 @@
     display: flex;
     flex-direction: row-reverse;
     gap: 0.5rem;
+  }
+
+  .charts {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+  .chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 460px;
+    height: 460px;
+    border: 1px solid var(--color-muted-teal);
+    margin: 1rem;
+    margin-bottom: 0;
   }
 </style>
