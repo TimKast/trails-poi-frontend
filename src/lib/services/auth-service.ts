@@ -17,6 +17,7 @@ export const authService = {
       if (response.ok) {
         const session: Session = {
           name: data.email,
+          role: data.role,
           token: data.token
         };
         return session;

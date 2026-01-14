@@ -6,9 +6,11 @@
   export let data: any;
   if (data.session) {
     loggedInUser.email = data.session.name;
+    loggedInUser.role = data.session.role;
     loggedInUser.token = data.session.token;
   } else {
     loggedInUser.email = "";
+    loggedInUser.role = "";
     loggedInUser.token = "";
   }
 </script>
