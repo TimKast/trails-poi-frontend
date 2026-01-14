@@ -1,7 +1,16 @@
 <script lang="ts">
-  import type { ActionData } from "./$types";
+  import { CldUploadWidget } from "svelte-cloudinary";
 
-  export let form: ActionData;
+  let { form } = $props();
+  let uploadedImages = $state<string[]>([]);
+
+  function onSuccess(result: any) {
+    if (result.event === "success") {
+      uploadedImages.push(result.info.secure_url);
+    } else if (result.event === "error") {
+      alert("Error uploading image: " + result.error.message);
+    }
+  }
 </script>
 
 <form method="POST" action="?/create">
@@ -59,15 +68,19 @@
           />
         </div>
       </div>
-      <button type="button" on:click={() => alert("Map integration coming soon!")}>
-        Add images (Coming Soon)
-      </button>
-    </div>
-  </div>
+      <div class="image-upload">
+        <CldUploadWidget uploadPreset="unsigned_upload" let:open let:isLoading {onSuccess}>
+          <button type="button" onclick={() => open()} disabled={isLoading}> Add Image </button>
+        </CldUploadWidget>
 
-  <div class="actions">
-    <button type="submit">Create Trail</button>
-    <a href="/home">Cancel</a>
+        <p>
+          Images uploaded: {uploadedImages.length}
+        </p>
+        {#each uploadedImages as imgUrl}
+          <input type="hidden" name="images" value={imgUrl} />
+        {/each}
+      </div>
+    </div>
   </div>
 
   {#if form?.error}
@@ -75,12 +88,18 @@
       {form.error}
     </div>
   {/if}
+
+  <div class="actions">
+    <button type="submit">Create Trail</button>
+    <a class="cancel" href="/home">Cancel</a>
+  </div>
 </form>
 
 <style>
   form {
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
     width: 60vw;
     padding: 2rem;
     border: 1px solid var(--color-muted-teal);
@@ -109,6 +128,12 @@
     justify-content: space-between;
     width: 40%;
     margin-bottom: 1rem;
+  }
+  .image-upload {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 1rem;
   }
 
   .actions {
@@ -143,7 +168,22 @@
     border-color: var(--color-dark-spruce);
   }
 
+  .cancel {
+    text-decoration: none;
+    color: var(--color-dark-spruce);
+    border: 1px solid var(--color-dark-spruce);
+    padding: 0.5rem 1rem;
+    margin-right: 0.25rem;
+    border-radius: 4px;
+  }
+
+  .cancel:hover {
+    background-color: var(--color-muted-teal);
+    color: #fff;
+  }
+
   .error {
+    margin-top: 0.5rem;
     padding: 0.75rem;
     background-color: #fee;
     border: 1px solid #fcc;

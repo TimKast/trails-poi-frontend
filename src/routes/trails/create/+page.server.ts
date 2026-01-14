@@ -8,7 +8,8 @@ export const actions: Actions = {
     const form = await request.formData();
     const name = form.get("name") as string;
     const description = form.get("description") as string;
-    //const images = form.getAll("images") as string[];
+    const images = form.getAll("images") as string[];
+    console.log("Images received in form data:", images);
     const lat = parseFloat(form.get("lat") as string);
     const lon = parseFloat(form.get("lon") as string);
 
@@ -52,7 +53,7 @@ export const actions: Actions = {
         name,
         description,
         location: { lat, lon },
-        images: []
+        images: images
       },
       token
     );

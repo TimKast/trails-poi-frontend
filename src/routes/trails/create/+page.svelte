@@ -1,8 +1,7 @@
 <script lang="ts">
-  import type { ActionData } from "./$types";
   import CreateTrailForm from "./CreateTrailForm.svelte";
 
-  export let form: ActionData;
+  let { form } = $props();
 </script>
 
 <section class="page">
