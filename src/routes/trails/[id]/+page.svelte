@@ -38,6 +38,7 @@
         <CldUploadWidget uploadPreset="unsigned_upload" let:open let:isLoading {onSuccess}>
           <button onclick={() => open()} disabled={isLoading}> Add Image </button>
         </CldUploadWidget>
+        <button onclick={() => goto(`/trails/${data.trail!._id}/edit`)}>Edit</button>
         <button
           type="button"
           onclick={() =>

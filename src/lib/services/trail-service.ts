@@ -91,5 +91,27 @@ export const trailService = {
       console.error("Adding images failed:", error);
       return false;
     }
+  },
+
+  updateTrail: async (
+    id: string,
+    updatedTrail: Partial<Omit<Trail, "_id" | "__v">>,
+    token: string
+  ): Promise<boolean> => {
+    try {
+      const response = await fetch(`${trailService.baseUrl}trails/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        },
+        body: JSON.stringify(updatedTrail)
+      });
+
+      return response.ok;
+    } catch (error) {
+      console.error("Updating trail failed:", error);
+      return false;
+    }
   }
 };
