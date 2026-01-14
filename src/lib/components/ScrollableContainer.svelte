@@ -20,7 +20,6 @@
     gap: 0.75rem;
     background: var(--color-bg);
     border: 1px solid var(--color-muted-teal);
-
     padding: 1rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   }

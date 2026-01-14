@@ -16,3 +16,12 @@ export interface Poi {
   images: string[];
   __v: number;
 }
+
+export type UserRole = "admin" | "user";
+
+export interface User {
+  _id: string;
+  email: string;
+  password: string;
+  role: UserRole;
+}

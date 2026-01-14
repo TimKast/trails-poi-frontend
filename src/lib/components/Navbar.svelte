@@ -10,6 +10,10 @@
       {#if loggedInUser.token}
         <a href="/home" class="nav-link">Home</a>
         <span class="nav-divider">|</span>
+        {#if loggedInUser.role === "admin"}
+          <a href="/admin" class="nav-link">Admin</a>
+          <span class="nav-divider">|</span>
+        {/if}
         <a href="/" class="nav-link">{loggedInUser.email}</a>
         <a href="/logout" class="nav-link logout-link">Logout</a>
       {/if}
