@@ -5,7 +5,6 @@
   export let data: any;
   let map: LeafletMap;
 
-  console.log("POI data:", data);
   onMount(async () => {
     await map.addPoiMarker(data.poi);
   });

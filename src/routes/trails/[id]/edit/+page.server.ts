@@ -21,23 +21,10 @@ export const actions: Actions = {
     const form = await request.formData();
     const name = form.get("name") as string;
     const description = form.get("description") as string;
-    const lat = parseFloat(form.get("lat") as string);
-    const lon = parseFloat(form.get("lon") as string);
+    const coordinates = form.getAll("coordinates") as string[];
 
-    if (!name || !description || isNaN(lat) || isNaN(lon)) {
+    if (!name || !description || !coordinates || coordinates.length === 0) {
       return fail(400, { error: "All fields are required" });
-    }
-
-    if (lat < -90 || lat > 90) {
-      return fail(400, {
-        error: "Latitude must be between -90 and 90"
-      });
-    }
-
-    if (lon < -180 || lon > 180) {
-      return fail(400, {
-        error: "Longitude must be between -180 and 180"
-      });
     }
 
     const response = await trailService.updateTrail(
@@ -45,7 +32,10 @@ export const actions: Actions = {
       {
         name,
         description,
-        geometry: { type: "LineString", coordinates: [[lon, lat]] }
+        geometry: {
+          type: "LineString",
+          coordinates: coordinates.map((coord) => JSON.parse(coord) as [number, number, number])
+        }
       },
       token
     );

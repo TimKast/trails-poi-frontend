@@ -9,30 +9,13 @@ export const actions: Actions = {
     const name = form.get("name") as string;
     const description = form.get("description") as string;
     const images = form.getAll("images") as string[];
-    const lat = parseFloat(form.get("lat") as string);
-    const lon = parseFloat(form.get("lon") as string);
+    const coordinates = form.getAll("coordinates") as string[];
 
-    if (!name || !description || isNaN(lat) || isNaN(lon)) {
-      return fail(400, { error: "All fields are required", name, description, lat, lon });
-    }
-
-    if (lat < -90 || lat > 90) {
+    if (!name || !description || !coordinates || coordinates.length === 0) {
       return fail(400, {
-        error: "Latitude must be between -90 and 90",
+        error: "All fields and at least one coordinate are required",
         name,
-        description,
-        lat,
-        lon
-      });
-    }
-
-    if (lon < -180 || lon > 180) {
-      return fail(400, {
-        error: "Longitude must be between -180 and 180",
-        name,
-        description,
-        lat,
-        lon
+        description
       });
     }
 
@@ -42,8 +25,7 @@ export const actions: Actions = {
         error: "You must be logged in to create a trail",
         name,
         description,
-        lat,
-        lon
+        coordinates
       });
     }
 
@@ -51,14 +33,17 @@ export const actions: Actions = {
       {
         name,
         description,
-        geometry: { type: "LineString", coordinates: [[lon, lat]] },
+        geometry: {
+          type: "LineString",
+          coordinates: coordinates.map((coord) => JSON.parse(coord) as [number, number, number?])
+        },
         images: images
       },
       token
     );
 
     if (!trail) {
-      return fail(500, { error: "Failed to create trail", name, description, lat, lon });
+      return fail(500, { error: "Failed to create trail", name, description });
     }
     redirect(303, "/home");
   }
