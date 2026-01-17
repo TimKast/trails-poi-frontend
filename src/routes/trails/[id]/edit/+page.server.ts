@@ -5,6 +5,11 @@ import { loggedInUser } from "$lib/runes.svelte.js";
 
 export async function load({ params, fetch, parent }) {
   const { session } = await parent();
+
+  if (!session?.token) {
+    redirect(303, "/");
+  }
+
   const response = await fetch(`http://localhost:3000/api/trails/${params.id}`, {
     method: "GET",
     headers: {

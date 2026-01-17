@@ -3,6 +3,14 @@ import { fail, redirect } from "@sveltejs/kit";
 import type { Actions } from "./$types";
 import { loggedInUser } from "$lib/runes.svelte";
 
+export const load = async ({ parent }) => {
+  const { session } = await parent();
+
+  if (!session?.token) {
+    redirect(303, "/");
+  }
+};
+
 export const actions: Actions = {
   create: async ({ request }) => {
     const form = await request.formData();
