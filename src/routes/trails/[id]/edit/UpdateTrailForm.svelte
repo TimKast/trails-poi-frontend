@@ -1,5 +1,16 @@
 <script lang="ts">
   let { data } = $props();
+
+  // svelte-ignore state_referenced_locally
+  const coordinates = $state(data?.trail.geometry.coordinates);
+
+  function addCoordinate() {
+    coordinates.push(["", "", ""]);
+  }
+
+  function removeCoordinate(id: number) {
+    coordinates.splice(id, 1);
+  }
 </script>
 
 <form method="POST" action="?/update">
@@ -28,36 +39,71 @@
         ></textarea>
       </div>
     </div>
+  </div>
 
-    <div class="column-40">
-      <div class="location">
-        <div>
-          <label for="lat">Latitude</label>
-          <input
-            id="lat"
-            type="number"
-            name="lat"
-            placeholder="e.g. 47.5"
-            value={data?.trail.location.lat ?? ""}
-            step="0.00001"
-            required
-          />
-        </div>
+  <div class="coordinates-section">
+    <h3>Trail Coordinates</h3>
+    <button type="button" onclick={addCoordinate} class="add-btn"> + Add Coordinate </button>
 
-        <div>
-          <label for="lon">Longitude</label>
-          <input
-            id="lon"
-            type="number"
-            name="lon"
-            placeholder="e.g. 11.5"
-            value={data?.trail.location.lon ?? ""}
-            step="0.00001"
-            required
-          />
-        </div>
+    {#if coordinates.length > 0}
+      <div class="coordinates-list">
+        {#each coordinates as coord, i}
+          <div class="coordinate-item">
+            <div class="coord-inputs">
+              <div>
+                <label for="lat-{i}">Latitude</label>
+                <input
+                  id="lat-{i}"
+                  type="number"
+                  bind:value={coord[1]}
+                  placeholder="e.g. 47.5"
+                  step="0.00001"
+                  max="90"
+                  min="-90"
+                  required
+                />
+              </div>
+              <div>
+                <label for="lon-{i}">Longitude</label>
+                <input
+                  id="lon-{i}"
+                  type="number"
+                  bind:value={coord[0]}
+                  placeholder="e.g. 11.5"
+                  step="0.00001"
+                  max="180"
+                  min="-180"
+                  required
+                />
+              </div>
+              <div>
+                <label for="elev-{i}">Elevation (m)</label>
+                <input
+                  id="elev-{i}"
+                  type="number"
+                  bind:value={coord[2]}
+                  placeholder="Optional"
+                  step="1"
+                  max="9000"
+                  min="-100"
+                />
+              </div>
+            </div>
+            <button type="button" onclick={() => removeCoordinate(i)} class="remove-btn">
+              Remove
+            </button>
+          </div>
+        {/each}
       </div>
-    </div>
+    {/if}
+
+    {#each coordinates as coord}
+      <input
+        type="hidden"
+        name="coordinates"
+        value={JSON.stringify([coord[0], coord[1], coord[2]])}
+      />
+    {/each}
   </div>
 
   {#if data?.error}
@@ -86,25 +132,87 @@
   }
   .content {
     display: flex;
-    flex-direction: row;
-    gap: 1.5rem;
-  }
-
-  .column-60 {
-    display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 60%;
+    width: 100%;
     margin-bottom: 1rem;
     gap: 1rem;
   }
 
-  .column-40 {
+  .coordinates-section {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border: 1px solid var(--color-muted-teal);
+    border-radius: 4px;
+  }
+
+  .coordinates-section h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--color-dark-spruce);
+    font-size: 1.1rem;
+  }
+
+  .add-btn {
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .coordinates-list {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    width: 40%;
-    margin-bottom: 1rem;
+    gap: 1rem;
+  }
+
+  .coordinate-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 4px;
+    align-items: flex-end;
+  }
+
+  .coord-inputs {
+    display: flex;
+    gap: 1rem;
+    flex: 1;
+  }
+
+  .coord-inputs div {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+    color: var(--color-dark-spruce);
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+  }
+
+  .coord-inputs input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+  }
+
+  .remove-btn {
+    padding: 0.5rem 1rem;
+    background-color: #f0f0f0;
+    color: #d32f2f;
+    border: 1px solid #d32f2f;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .remove-btn:hover {
+    background-color: #fde;
   }
 
   .actions {

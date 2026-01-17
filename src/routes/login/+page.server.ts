@@ -10,7 +10,6 @@ export const actions: Actions = {
     const password = form.get("password") as string;
 
     const session = await authService.login(email, password);
-    console.log("Session:", session);
     if (session) {
       const userJson = JSON.stringify(session);
       cookies.set("user", userJson, {

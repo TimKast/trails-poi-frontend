@@ -2,7 +2,6 @@
   import UpdateTrailForm from "./UpdateTrailForm.svelte";
 
   let { data } = $props();
-  console.log(data);
 </script>
 
 <section class="page">

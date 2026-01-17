@@ -2,7 +2,10 @@ export interface Trail {
   _id: string;
   name: string;
   description: string;
-  location: { lat: number; lon: number };
+  geometry: {
+    type: "LineString";
+    coordinates: [number, number, number?][]; //lon, lat, optional: Elevation
+  };
   images: string[];
   __v: number;
 }
