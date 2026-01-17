@@ -5,8 +5,7 @@
   import type { Poi, Trail } from "$lib/types/object-types";
 
   let id = "home-map-id";
-  let { height = 100, width = 100, location = { lat: 48, lon: 11 } } = $props();
-  let zoom = 9;
+  let { height = 100, width = 100, location = { lat: 48, lon: 11 }, zoom = 9 } = $props();
   let minZoom = 6;
   let activeLayer = "Terrain";
 
@@ -53,8 +52,18 @@
       trailLayer = L.layerGroup().addTo(map);
       control.addOverlay(trailLayer, "Trails");
     }
-    const marker = L.marker([trail.location.lat, trail.location.lon]).addTo(trailLayer);
+    const marker = L.marker([
+      trail.geometry.coordinates[0][1],
+      trail.geometry.coordinates[0][0]
+    ]).addTo(trailLayer);
     marker.bindTooltip(`<b>${trail.name}</b>`);
+  }
+
+  export async function drawTrailPath(trail: Trail) {
+    const leaflet = await import("leaflet");
+    const L = leaflet.default;
+
+    L.geoJSON(trail.geometry).addTo(map);
   }
 
   export async function addPoiMarker(poi: Poi) {

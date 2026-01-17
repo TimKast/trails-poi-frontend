@@ -45,7 +45,7 @@ export const actions: Actions = {
       {
         name,
         description,
-        location: { lat, lon }
+        geometry: { type: "LineString", coordinates: [[lon, lat]] }
       },
       token
     );

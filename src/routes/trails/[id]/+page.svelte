@@ -9,6 +9,7 @@
   let map: LeafletMap;
   onMount(async () => {
     await map.addTrailMarker(data.trail!);
+    await map.drawTrailPath(data.trail!);
   });
 
   function onSuccess(result: any) {
@@ -31,8 +32,8 @@
       <div>
         <h1>{data.trail?.name}</h1>
         <p>{data.trail?.description}</p>
-        <p>Lat: {data.trail?.location.lat}</p>
-        <p>Lng: {data.trail?.location.lon}</p>
+        <p>Lat: {data.trail?.geometry.coordinates[0][1]}</p>
+        <p>Lng: {data.trail?.geometry.coordinates[0][0]}</p>
       </div>
       <div class="actions">
         <CldUploadWidget uploadPreset="unsigned_upload" let:open let:isLoading {onSuccess}>
@@ -56,7 +57,16 @@
         </button>
       </div>
     </div>
-    <LeafletMap height={50} width={100} location={data.trail?.location} bind:this={map} />
+    <LeafletMap
+      height={50}
+      width={100}
+      zoom={14}
+      location={{
+        lat: data.trail?.geometry.coordinates[0][1],
+        lon: data.trail?.geometry.coordinates[0][0]
+      }}
+      bind:this={map}
+    />
   </div>
 </section>
 
