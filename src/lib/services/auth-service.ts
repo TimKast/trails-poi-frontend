@@ -1,8 +1,7 @@
-import { API_BASE_URL } from "$env/static/private";
 import type { Session } from "$lib/types/session-types";
 
 export const authService = {
-  baseUrl: API_BASE_URL,
+  baseUrl: "https://alpine-trails.onrender.com/api",
 
   async login(email: string, password: string): Promise<Session | null> {
     try {

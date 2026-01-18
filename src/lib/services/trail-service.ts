@@ -1,8 +1,7 @@
-import { API_BASE_URL } from "$env/static/private";
 import type { Trail } from "$lib/types/object-types";
 
 export const trailService = {
-  baseUrl: API_BASE_URL,
+  baseUrl: "https://alpine-trails.onrender.com/api",
 
   async getTrails(token: string): Promise<Trail[]> {
     try {
