@@ -5,7 +5,7 @@ export const trailService = {
 
   async getTrails(token: string): Promise<Trail[]> {
     try {
-      const response = await fetch(`${this.baseUrl}trails`, {
+      const response = await fetch(`${this.baseUrl}/trails`, {
         method: "GET",
         headers: { Authorization: token }
       });
@@ -23,7 +23,7 @@ export const trailService = {
 
   async getTrailById(id: string, token: string): Promise<Trail | null> {
     try {
-      const response = await fetch(`${this.baseUrl}trails/${id}`, {
+      const response = await fetch(`${this.baseUrl}/trails/${id}`, {
         method: "GET",
         headers: { Authorization: token }
       });
@@ -41,7 +41,7 @@ export const trailService = {
 
   async createTrail(trail: Omit<Trail, "_id" | "__v">, token: string): Promise<Trail | null> {
     try {
-      const response = await fetch(`${this.baseUrl}trails`, {
+      const response = await fetch(`${this.baseUrl}/trails`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export const trailService = {
 
   deleteTrail: async (id: string, token: string): Promise<boolean> => {
     try {
-      const response = await fetch(`${trailService.baseUrl}trails/${id}`, {
+      const response = await fetch(`${trailService.baseUrl}/trails/${id}`, {
         method: "DELETE",
         headers: { Authorization: token }
       });
@@ -77,7 +77,7 @@ export const trailService = {
 
   addImages: async (id: string, imageUrls: string[], token: string): Promise<boolean> => {
     try {
-      const response = await fetch(`${trailService.baseUrl}trails/${id}/images`, {
+      const response = await fetch(`${trailService.baseUrl}/trails/${id}/images`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +99,7 @@ export const trailService = {
     token: string
   ): Promise<boolean> => {
     try {
-      const response = await fetch(`${trailService.baseUrl}trails/${id}`, {
+      const response = await fetch(`${trailService.baseUrl}/trails/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
