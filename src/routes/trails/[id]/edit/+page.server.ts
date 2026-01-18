@@ -3,20 +3,14 @@ import type { Actions } from "./$types";
 import { trailService } from "$lib/services/trail-service.js";
 import { loggedInUser } from "$lib/runes.svelte.js";
 
-export async function load({ params, fetch, parent }) {
+export async function load({ params, parent }) {
   const { session } = await parent();
 
   if (!session?.token) {
     redirect(303, "/");
   }
 
-  const response = await fetch(`http://localhost:3000/api/trails/${params.id}`, {
-    method: "GET",
-    headers: {
-      Authorization: session?.token ?? ""
-    }
-  });
-  const trail = await response.json();
+  const trail = await trailService.getTrailById(params.id, session.token);
   return { trail };
 }
 
