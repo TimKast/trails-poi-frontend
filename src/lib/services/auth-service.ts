@@ -1,7 +1,8 @@
+import { API_BASE_URL } from "$env/static/private";
 import type { Session } from "$lib/types/session-types";
 
 export const authService = {
-  baseUrl: "http://localhost:3000/api/",
+  baseUrl: API_BASE_URL,
 
   async login(email: string, password: string): Promise<Session | null> {
     try {

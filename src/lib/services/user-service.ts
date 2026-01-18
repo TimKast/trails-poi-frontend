@@ -1,7 +1,8 @@
+import { API_BASE_URL } from "$env/static/private";
 import type { User } from "../types/object-types";
 
 export const userService = {
-  baseUrl: "http://localhost:3000/api/",
+  baseUrl: API_BASE_URL,
 
   async getAllUsers(token: string): Promise<User[]> {
     try {

@@ -1,7 +1,8 @@
+import { API_BASE_URL } from "$env/static/private";
 import type { Poi } from "$lib/types/object-types";
 
 export const poiService = {
-  baseUrl: "http://localhost:3000/api/",
+  baseUrl: API_BASE_URL,
 
   async getPois(token: string): Promise<Poi[]> {
     try {
