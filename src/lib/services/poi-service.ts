@@ -5,7 +5,7 @@ export const poiService = {
 
   async getPois(token: string): Promise<Poi[]> {
     try {
-      const response = await fetch(`${this.baseUrl}pois`, {
+      const response = await fetch(`${this.baseUrl}/pois`, {
         method: "GET",
         headers: { Authorization: token }
       });
@@ -23,7 +23,7 @@ export const poiService = {
 
   async getPoiById(id: string, token: string): Promise<Poi | null> {
     try {
-      const response = await fetch(`${this.baseUrl}pois/${id}`, {
+      const response = await fetch(`${this.baseUrl}/pois/${id}`, {
         method: "GET",
         headers: { Authorization: token }
       });

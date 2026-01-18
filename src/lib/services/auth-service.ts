@@ -5,7 +5,7 @@ export const authService = {
 
   async login(email: string, password: string): Promise<Session | null> {
     try {
-      const response = await fetch(`${this.baseUrl}authenticate`, {
+      const response = await fetch(`${this.baseUrl}/authenticate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -31,7 +31,7 @@ export const authService = {
 
   async signup(email: string, password: string): Promise<Session | null> {
     try {
-      const response = await fetch(`${this.baseUrl}signup`, {
+      const response = await fetch(`${this.baseUrl}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

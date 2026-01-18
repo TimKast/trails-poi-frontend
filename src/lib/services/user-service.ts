@@ -5,7 +5,7 @@ export const userService = {
 
   async getAllUsers(token: string): Promise<User[]> {
     try {
-      const response = await fetch(`${this.baseUrl}users`, {
+      const response = await fetch(`${this.baseUrl}/users`, {
         method: "GET",
         headers: { Authorization: token }
       });
@@ -23,7 +23,7 @@ export const userService = {
 
   async deleteUser(id: string, token: string): Promise<boolean> {
     try {
-      const response = await fetch(`${this.baseUrl}users/${id}`, {
+      const response = await fetch(`${this.baseUrl}/users/${id}`, {
         method: "DELETE",
         headers: { Authorization: token }
       });
@@ -37,7 +37,7 @@ export const userService = {
 
   async makeAdmin(id: string, token: string): Promise<boolean> {
     try {
-      const response = await fetch(`${this.baseUrl}admin/${id}`, {
+      const response = await fetch(`${this.baseUrl}/admin/${id}`, {
         method: "POST",
         headers: { Authorization: token }
       });
