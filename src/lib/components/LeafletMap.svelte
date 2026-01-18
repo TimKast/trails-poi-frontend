@@ -1,5 +1,4 @@
 <script lang="ts">
-  import "leaflet/dist/leaflet.css";
   import { onMount } from "svelte";
   import type { Control, Layer, LayerGroup, Map as LeafletMap } from "leaflet";
   import type { Poi, Trail } from "$lib/types/object-types";
