@@ -2,25 +2,57 @@
   import { invalidateAll } from "$app/navigation";
   import ScrollableContainer from "$lib/components/ScrollableContainer.svelte";
   import { userService } from "$lib/services/user-service.js";
+  import { Chart, registerables } from "chart.js";
   import { onMount } from "svelte";
-  import Chart from "svelte-frappe-charts";
 
-  let mounted = $state(false);
+  Chart.register(...registerables);
+
   let { data } = $props();
 
-  const chartData = {
-    labels: ["User", "Admin"],
-    datasets: [
-      {
-        values: [
-          data.users.filter((user) => user.role === "user").length,
-          data.users.filter((user) => user.role === "admin").length
-        ]
-      }
-    ]
-  };
+  let chart: Chart;
+
+  let users;
+  let admins;
+
+  $effect(() => {
+    users = data.users.filter((user) => user.role === "user");
+    admins = data.users.filter((user) => user.role === "admin");
+    if (chart) {
+      chart.data.datasets[0].data = [users.length, admins.length];
+      chart.update();
+    }
+  });
+
   onMount(() => {
-    mounted = true;
+    const styles = getComputedStyle(document.documentElement);
+    const darkSpruce = styles.getPropertyValue("--color-dark-spruce").trim();
+    const mutedTeal = styles.getPropertyValue("--color-muted-teal").trim();
+    const toastedAlmond = styles.getPropertyValue("--color-toasted-almond").trim();
+    const goldenEarth = styles.getPropertyValue("--color-golden-earth").trim();
+
+    chart = new Chart(document.getElementById("chart") as HTMLCanvasElement, {
+      type: "pie",
+      data: {
+        labels: ["Users", "Admins"],
+        datasets: [
+          {
+            data: [users.length, admins.length],
+            borderWidth: 1,
+            backgroundColor: [toastedAlmond, mutedTeal],
+            hoverBackgroundColor: [goldenEarth, darkSpruce]
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            reverse: true,
+            position: "bottom"
+          }
+        }
+      }
+    });
   });
 </script>
 
@@ -72,13 +104,9 @@
       {/each}
     </ScrollableContainer>
   </div>
-  {#if mounted}
-    <div class="charts">
-      <div class="chart-container">
-        <Chart data={chartData} type="pie" />
-      </div>
-    </div>
-  {/if}
+  <div class="chart-container">
+    <canvas id="chart"></canvas>
+  </div>
 </section>
 
 <style>
@@ -125,21 +153,7 @@
     gap: 0.5rem;
   }
 
-  .charts {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-  }
   .chart-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 460px;
-    height: 460px;
-    border: 1px solid var(--color-muted-teal);
-    margin: 1rem;
-    margin-bottom: 0;
+    margin-top: 2rem;
   }
 </style>

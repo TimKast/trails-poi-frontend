@@ -64,16 +64,22 @@
   let chart: Chart;
 
   onMount(() => {
+    const styles = getComputedStyle(document.documentElement);
+    const darkSpruce = styles.getPropertyValue("--color-dark-spruce").trim();
+    const mutedTeal = styles.getPropertyValue("--color-muted-teal").trim();
+    const toastedAlmond = styles.getPropertyValue("--color-toasted-almond").trim();
+    const goldenEarth = styles.getPropertyValue("--color-golden-earth").trim();
+
     chart = new Chart(canvasEl, {
       type: "line",
       data: {
         labels: distances,
         datasets: [
           {
-            label: "Höhe (m)",
+            label: "Height (m)",
             data: smoothedElevations,
-            borderColor: "blue",
-            backgroundColor: "rgba(0,0,255,0.2)",
+            borderColor: toastedAlmond,
+            backgroundColor: "rgba(255, 218, 185, 0.2)",
             fill: true,
             tension: 0.3
           }
@@ -95,10 +101,10 @@
         },
         scales: {
           y: {
-            title: { display: true, text: "Höhe (m)" }
+            title: { display: true, text: "Height (m)" }
           },
           x: {
-            title: { display: true, text: "Distanz (km)" }
+            title: { display: true, text: "Distance (km)" }
           }
         }
       }
@@ -107,6 +113,6 @@
 </script>
 
 <div>
-  <h3>Höhenprofil</h3>
+  <h3>Elevation Profile</h3>
   <canvas bind:this={canvasEl}></canvas>
 </div>
