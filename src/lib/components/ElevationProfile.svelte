@@ -116,3 +116,11 @@
   <h3>Elevation Profile</h3>
   <canvas bind:this={canvasEl}></canvas>
 </div>
+
+<style>
+  canvas {
+    max-width: 100%;
+    max-height: 250px;
+    height: auto;
+  }
+</style>
