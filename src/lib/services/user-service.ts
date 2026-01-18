@@ -1,8 +1,7 @@
-import { API_BASE_URL } from "$env/static/private";
 import type { User } from "../types/object-types";
 
 export const userService = {
-  baseUrl: API_BASE_URL,
+  baseUrl: "https://alpine-trails.onrender.com/api",
 
   async getAllUsers(token: string): Promise<User[]> {
     try {

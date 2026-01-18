@@ -1,8 +1,7 @@
-import { API_BASE_URL } from "$env/static/private";
 import type { Poi } from "$lib/types/object-types";
 
 export const poiService = {
-  baseUrl: API_BASE_URL,
+  baseUrl: "https://alpine-trails.onrender.com/api",
 
   async getPois(token: string): Promise<Poi[]> {
     try {
