@@ -76,7 +76,7 @@
         labels: distances,
         datasets: [
           {
-            label: "Höhe (m)",
+            label: "Height (m)",
             data: smoothedElevations,
             borderColor: toastedAlmond,
             backgroundColor: "rgba(255, 218, 185, 0.2)",
@@ -101,10 +101,10 @@
         },
         scales: {
           y: {
-            title: { display: true, text: "Höhe (m)" }
+            title: { display: true, text: "Height (m)" }
           },
           x: {
-            title: { display: true, text: "Distanz (km)" }
+            title: { display: true, text: "Distance (km)" }
           }
         }
       }
@@ -113,6 +113,6 @@
 </script>
 
 <div>
-  <h3>Höhenprofil</h3>
+  <h3>Elevation Profile</h3>
   <canvas bind:this={canvasEl}></canvas>
 </div>

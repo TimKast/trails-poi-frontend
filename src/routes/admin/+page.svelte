@@ -104,7 +104,7 @@
       {/each}
     </ScrollableContainer>
   </div>
-  <div>
+  <div class="chart-container">
     <canvas id="chart"></canvas>
   </div>
 </section>
@@ -151,5 +151,9 @@
     display: flex;
     flex-direction: row-reverse;
     gap: 0.5rem;
+  }
+
+  .chart-container {
+    margin-top: 2rem;
   }
 </style>
