@@ -1,7 +1,8 @@
+import { API_BASE_URL } from "$env/static/private";
 import type { Trail } from "$lib/types/object-types";
 
 export const trailService = {
-  baseUrl: "http://localhost:3000/api/",
+  baseUrl: API_BASE_URL,
 
   async getTrails(token: string): Promise<Trail[]> {
     try {
