@@ -10,7 +10,7 @@
   let { trail } = $props();
 
   function haversine([lon1, lat1]: [number, number], [lon2, lat2]: [number, number]): number {
-    const R = 6371; // km
+    const R = 6371; // radius of earth in km
     const toRad = (x: number) => (x * Math.PI) / 180;
     const dLat = toRad(lat2 - lat1);
     const dLon = toRad(lon2 - lon1);
@@ -59,16 +59,14 @@
   // svelte-ignore state_referenced_locally
   const { distances, elevations } = getTrailProfile(trail);
 
-  const smoothedElevations = weightedMovingAverage(elevations);
+  //I decided to use the actual elevation data instead of the smoothed one for better accuracy
+  // const smoothedElevations = weightedMovingAverage(elevations);
 
   let chart: Chart;
 
   onMount(() => {
     const styles = getComputedStyle(document.documentElement);
-    const darkSpruce = styles.getPropertyValue("--color-dark-spruce").trim();
-    const mutedTeal = styles.getPropertyValue("--color-muted-teal").trim();
     const toastedAlmond = styles.getPropertyValue("--color-toasted-almond").trim();
-    const goldenEarth = styles.getPropertyValue("--color-golden-earth").trim();
 
     chart = new Chart(canvasEl, {
       type: "line",
@@ -77,7 +75,7 @@
         datasets: [
           {
             label: "Height (m)",
-            data: smoothedElevations,
+            data: elevations,
             borderColor: toastedAlmond,
             backgroundColor: "rgba(255, 218, 185, 0.2)",
             fill: true,
