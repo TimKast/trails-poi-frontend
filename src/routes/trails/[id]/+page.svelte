@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import ElevationProfile from "$lib/components/ElevationProfile.svelte";
+  import ImageCarousel from "$lib/components/ImageCarousel.svelte";
   import LeafletMap from "$lib/components/LeafletMap.svelte";
   import { trailService } from "$lib/services/trail-service";
   import { onMount } from "svelte";
@@ -24,9 +25,7 @@
 
 <section class="page">
   <div class="row">
-    {#each data.trail?.images as image}
-      <img src={image} alt="Trail" />
-    {/each}
+    <ImageCarousel images={data.trail?.images} />
   </div>
   <div class="row">
     <div class="column">
@@ -81,14 +80,6 @@
     flex-direction: column;
     align-items: center;
     padding: 1rem;
-  }
-
-  img {
-    width: 35rem;
-    height: auto;
-    margin: 0.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   .row {
