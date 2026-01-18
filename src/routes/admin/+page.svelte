@@ -2,8 +2,58 @@
   import { invalidateAll } from "$app/navigation";
   import ScrollableContainer from "$lib/components/ScrollableContainer.svelte";
   import { userService } from "$lib/services/user-service.js";
+  import { Chart, registerables } from "chart.js";
+  import { onMount } from "svelte";
+
+  Chart.register(...registerables);
 
   let { data } = $props();
+
+  let chart: Chart;
+
+  let users;
+  let admins;
+
+  $effect(() => {
+    users = data.users.filter((user) => user.role === "user");
+    admins = data.users.filter((user) => user.role === "admin");
+    if (chart) {
+      chart.data.datasets[0].data = [users.length, admins.length];
+      chart.update();
+    }
+  });
+
+  onMount(() => {
+    const styles = getComputedStyle(document.documentElement);
+    const darkSpruce = styles.getPropertyValue("--color-dark-spruce").trim();
+    const mutedTeal = styles.getPropertyValue("--color-muted-teal").trim();
+    const toastedAlmond = styles.getPropertyValue("--color-toasted-almond").trim();
+    const goldenEarth = styles.getPropertyValue("--color-golden-earth").trim();
+
+    chart = new Chart(document.getElementById("chart") as HTMLCanvasElement, {
+      type: "pie",
+      data: {
+        labels: ["Users", "Admins"],
+        datasets: [
+          {
+            data: [users.length, admins.length],
+            borderWidth: 1,
+            backgroundColor: [toastedAlmond, mutedTeal],
+            hoverBackgroundColor: [goldenEarth, darkSpruce]
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            reverse: true,
+            position: "bottom"
+          }
+        }
+      }
+    });
+  });
 </script>
 
 <section class="page">
@@ -53,6 +103,9 @@
         </div>
       {/each}
     </ScrollableContainer>
+  </div>
+  <div>
+    <canvas id="chart"></canvas>
   </div>
 </section>
 

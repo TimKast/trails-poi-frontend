@@ -64,6 +64,12 @@
   let chart: Chart;
 
   onMount(() => {
+    const styles = getComputedStyle(document.documentElement);
+    const darkSpruce = styles.getPropertyValue("--color-dark-spruce").trim();
+    const mutedTeal = styles.getPropertyValue("--color-muted-teal").trim();
+    const toastedAlmond = styles.getPropertyValue("--color-toasted-almond").trim();
+    const goldenEarth = styles.getPropertyValue("--color-golden-earth").trim();
+
     chart = new Chart(canvasEl, {
       type: "line",
       data: {
@@ -72,8 +78,8 @@
           {
             label: "Höhe (m)",
             data: smoothedElevations,
-            borderColor: "blue",
-            backgroundColor: "rgba(0,0,255,0.2)",
+            borderColor: toastedAlmond,
+            backgroundColor: "rgba(255, 218, 185, 0.2)",
             fill: true,
             tension: 0.3
           }
