@@ -49,7 +49,7 @@
   .carousel {
     position: relative;
     width: 100%;
-    max-width: 1200px;
+    max-width: 800px;
     margin-bottom: 1rem;
   }
 
